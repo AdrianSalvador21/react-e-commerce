@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import HomePage from "./pages/homepage/homepage.component";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
@@ -26,6 +26,7 @@ class App extends React.Component{
 
         userRef.onSnapshot(snapshot => {
           // console.log(snapshot.data());
+          // function setCurrentUser dispatch the action
           setCurrentUser({
               id: snapshot.id,
               ...snapshot.data()
@@ -51,16 +52,24 @@ class App extends React.Component{
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/shop' component={ShopPage}/>
-          <Route exact path='/signin' component={SignPage}/>
+          <Route exact path='/signin' render={() =>
+            this.props.currentUser ?
+              (<Redirect to='/' />) :
+              (<SignPage />)}
+          />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
+
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser((user)))
 });
 
 // we can pass as first argument null, if don't need any element of state
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

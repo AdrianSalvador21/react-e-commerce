@@ -7,8 +7,10 @@ import {auth} from "../../firebase/firebase.utils";
 
 // modify component to have access to redux
 import {connect} from "react-redux";
+import CartIcon from "../card-icon/card-icon.component";
+import CartDropdown from "../cart-dropdown/cart-dropdown.component";
 
-const Header = ({currentUser}) => (
+const Header = ({currentUser, hidden}) => (
   <div className='header'>
     <Link className='logo-container' to='/'>
       <Logo className='logo' />
@@ -30,15 +32,19 @@ const Header = ({currentUser}) => (
             SIGN IN
           </Link>
       }
+
+      <CartIcon />
     </div>
+    { hidden ? null : <CartDropdown /> }
   </div>
 );
 
 // this naming can be anythin, but matStateToProps
 // is standard with redux codebases
 // we need pass properties like props in owr component
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
+const mapStateToProps = ({user: {currentUser, cart: { hidden }}}) => ({
+  currentUser,
+  hidden
 });
 
 export default connect(mapStateToProps)(Header);
