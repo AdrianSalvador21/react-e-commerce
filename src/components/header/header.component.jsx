@@ -9,6 +9,9 @@ import {auth} from "../../firebase/firebase.utils";
 import {connect} from "react-redux";
 import CartIcon from "../card-icon/card-icon.component";
 import CartDropdown from "../cart-dropdown/cart-dropdown.component";
+import {createStructuredSelector} from "reselect";
+import {selectCurrentUser} from "../../redux/user/user.selectors";
+import {selectCartHidden} from "../../redux/cart/cart.selectors";
 
 const Header = ({currentUser, hidden}) => (
   <div className='header'>
@@ -42,9 +45,24 @@ const Header = ({currentUser, hidden}) => (
 // this naming can be anythin, but matStateToProps
 // is standard with redux codebases
 // we need pass properties like props in owr component
-const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+
+
+/* const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
   currentUser,
   hidden
+}); */
+
+// this is the same that create a createStructuredSelector
+/* const mapStateToProps = state => ({
+  currentUser: selectCurrentUser(state),
+  hidden: selectCartHidden(state)
+}); */
+
+
+// createStructuredSelector will pass the all state
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden
 });
 
 export default connect(mapStateToProps)(Header);
