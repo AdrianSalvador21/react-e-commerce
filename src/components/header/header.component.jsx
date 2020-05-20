@@ -42,7 +42,7 @@ const Header = ({currentUser, hidden}) => (
 // this naming can be anythin, but matStateToProps
 // is standard with redux codebases
 // we need pass properties like props in owr component
-const mapStateToProps = ({user: {currentUser, cart: { hidden }}}) => ({
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
   currentUser,
   hidden
 });
